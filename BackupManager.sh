@@ -298,9 +298,9 @@ ejecutar_tarea() {
             sleep 5
             return
         fi
-        rsync -avzh --delete -e "ssh -i $clave" "$origen" "$destino"
+        sudo rsync -avzh --delete -e "ssh -i $clave" "$origen" "$destino"
     else
-        rsync -avzh --delete "$origen" "$destino"
+        sudo rsync -avzh --delete "$origen" "$destino"
     fi
 
     if [[ $? -eq 0 ]]; then
