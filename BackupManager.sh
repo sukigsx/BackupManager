@@ -7,7 +7,7 @@ software="Sin comprobar"
 actualizado="No se ha podido comprobar la actualizacion del script"
 archivo_local="BackupManager.sh" # Nombre del archivo local para comprobar la actualizacion
 ruta_repositorio="https://github.com/sukigsx/BackupManager.git" #ruta del repositorio para actualizar y clonar con git clone
-descripcion="esta es la descripcion del script"
+descripcion="Herramienta para copias de seguridad"
 
 #VARIABLES DE SOFTWARE NECESARIO
 # Asociamos comandos con el paquete que los contiene [comando a comprobar]="paquete a instalar"
@@ -19,6 +19,8 @@ descripcion="esta es la descripcion del script"
         [diff]="diff"
         [ping]="ping"
         [find]="find"
+        [rsync]="rsync"
+        [ssh]="ssh"
     )
 
     CONFIG_FILE="backups.conf" #destino y nombre del fichero de configuracion
