@@ -10,8 +10,8 @@ archivo_local="BackupManager.sh" # Nombre del archivo local para comprobar la ac
 ruta_repositorio="https://github.com/sukigsx/BackupManager.git" #ruta del repositorio para actualizar y clonar con git clone
 descripcion="Herramienta para copias de seguridad"
 
-CONFIG_FILE="backups.conf"
-config_telegram="telegram.conf"
+CONFIG_FILE="$ruta_ejecucion/backups.conf"
+config_telegram="$ruta_ejecucion/telegram.conf"
 
 #VARIABLES DE SOFTWARE NECESARIO
 # Asociamos comandos con el paquete que los contiene [comando a comprobar]="paquete a instalar"
@@ -245,6 +245,7 @@ borrar_tarea() {
 ejecutar_tarea() {
     tarea="$1"
 
+    source $config_telegram
     clear
     echo ""
     menu_info
@@ -476,7 +477,7 @@ menu() {
 menu_info
 conexion
 if [ "$conexion" = "SI" ]; then
-    actualizar_script
+    #actualizar_script
     if [ "$actualizado" = "SI" ]; then
         software_necesario
         if [ "$software" = "SI" ]; then
