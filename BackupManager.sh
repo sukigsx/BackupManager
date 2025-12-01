@@ -1,4 +1,5 @@
 #!/bin/bash
+
 ruta_ejecucion=$(dirname "$(readlink -f "$0")") #es la ruta de ejecucion del script sin la / al final
 ruta_escritorio=$(xdg-user-dir DESKTOP) #es la ruta de tu escritorio sin la / al final
 export version="1.0"
@@ -8,6 +9,9 @@ actualizado="No se ha podido comprobar la actualizacion del script"
 archivo_local="BackupManager.sh" # Nombre del archivo local para comprobar la actualizacion
 ruta_repositorio="https://github.com/sukigsx/BackupManager.git" #ruta del repositorio para actualizar y clonar con git clone
 descripcion="Herramienta para copias de seguridad"
+
+CONFIG_FILE="backups.conf"
+config_telegram="telegram.conf"
 
 #VARIABLES DE SOFTWARE NECESARIO
 # Asociamos comandos con el paquete que los contiene [comando a comprobar]="paquete a instalar"
@@ -22,47 +26,6 @@ descripcion="Herramienta para copias de seguridad"
         [rsync]="rsync"
         [ssh]="ssh"
     )
-
-    CONFIG_FILE="backups.conf" #destino y nombre del fichero de configuracion
-config_telegram="telegram.conf" #destino y nombre del fichero configuracion telegram
-
-
-#colores
-#ejemplo: echo -e "${verde} La opcion (-e) es para que pille el color.${borra_colores}"
-
-rojo="\e[0;31m\033[1m" #rojo
-verde="\e[;32m\033[1m"
-azul="\e[0;34m\033[1m"
-amarillo="\e[0;33m\033[1m"
-rosa="\e[0;35m\033[1m"
-turquesa="\e[0;36m\033[1m"
-borra_colores="\033[0m\e[0m" #borra colores
-
-#toma el control al pulsar control + c
-trap ctrl_c INT
-function ctrl_c()
-{
-clear
-echo ""
-echo -e " ${verde}- Gracias por utilizar mi script -${borra_colores}"
-echo ""
-exit
-}
-
-menu_info(){
-#muestra el menu de sukigsx
-clear
-echo ""
-echo -e "${rosa}            _    _                  ${azul}   Nombre del script${borra_colores} $archivo_local"
-echo -e "${rosa}  ___ _   _| | _(_) __ _ _____  __  ${azul}   Descripcion${borra_colores} $descripcion"
-echo -e "${rosa} / __| | | | |/ / |/ _\ / __\ \/ /  ${azul}   Version            =${borra_colores} $version"
-echo -e "${rosa} \__ \ |_| |   <| | (_| \__ \>  <   ${azul}   Conexion Internet  =${borra_colores} $conexion"
-echo -e "${rosa} |___/\__,_|_|\_\_|\__, |___/_/\_\  ${azul}   Software necesario =${borra_colores} $software"
-echo -e "${rosa}                  |___/             ${azul}   Actualizado        =${borra_colores} $actualizado"
-echo -e ""
-echo -e "${azul} Contacto:${borra_colores} (Correo scripts@mbbsistemas.com) (Web https://repositorio.mbbsistemas.es)${borra_colores}"
-echo ""
-}
 
 actualizar_script(){
 #actualizar el script
@@ -168,13 +131,48 @@ for comando in "${!requeridos[@]}"; do
     sleep 2
 }
 
+#colores
+#ejemplo: echo -e "${verde} La opcion (-e) es para que pille el color.${borra_colores}"
+rojo="\e[0;31m\033[1m" #rojo
+verde="\e[;32m\033[1m"
+azul="\e[0;34m\033[1m"
+amarillo="\e[0;33m\033[1m"
+rosa="\e[0;35m\033[1m"
+turquesa="\e[0;36m\033[1m"
+borra_colores="\033[0m\e[0m" #borra colores
+
+menu_info(){
+clear
+echo ""
+echo -e "${rosa}            _    _                  ${azul}   Nombre del script  =${borra_colores} $archivo_local"
+echo -e "${rosa}  ___ _   _| | _(_) __ _ _____  __  ${azul}   Descripcion        =${borra_colores} $descripcion"
+echo -e "${rosa} / __| | | | |/ / |/ _\ / __\ \/ /  ${azul}   Version            =${borra_colores} $version"
+echo -e "${rosa} \__ \ |_| |   <| | (_| \__ \>  <   ${azul}   Conexion Internet  =${borra_colores} $conexion"
+echo -e "${rosa} |___/\__,_|_|\_\_|\__, |___/_/\_\  ${azul}   Software necesario =${borra_colores} $software"
+echo -e "${rosa}                  |___/             ${azul}   Actualizado        =${borra_colores} $actualizado"
+echo -e ""
+echo -e "${azul} Contacto:${borra_colores} (Correo scripts@mbbsistemas.com) (Web https://repositorio.mbbsistemas.es)${borra_colores}"
+echo ""
+}
+
+#toma el control al pulsar control + c
+trap ctrl_c INT
+function ctrl_c()
+{
+clear
+echo ""
+echo -e " ${verde}- Gracias por utilizar mi script -${borra_colores}"
+echo ""
+exit
+}
+
 listar_tareas() {
-    #comprobamos que el fichero de configuracion esta, sino se crea
+    # comprobamos que el fichero de configuracion esta, sino se crea
     if [ -f "$CONFIG_FILE" ]; then
         echo ""
     else
         touch "$CONFIG_FILE"
-        echo "[NOMBRE TAREA BACKUP]|[RUTA ORIGEN]|[RUTA DESTINO]|[CLAVE SSH]" >> $CONFIG_FILE
+        echo "NOMBRE|ORIGEN|DESTINO|CLAVE_ORIGEN|CLAVE_DESTINO" >> "$CONFIG_FILE"
         if [ -f "$CONFIG_FILE" ]; then
             echo ""
         else
@@ -202,13 +200,14 @@ agregar_tarea() {
     read -p " Nombre de la tarea: " nombre
     read -p " Ruta de origen (local o user@host:/ruta): " origen
     read -p " Ruta de destino (local o user@host:/ruta): " destino
-    read -p " Ruta a clave SSH (o dejar vacío si no aplica): " clave
+    read -p " Clave SSH origen (o dejar vacío si no aplica): " clave_origen
+    read -p " Clave SSH destino (o dejar vacío si no aplica): " clave_destino
 
     if [ -f "$CONFIG_FILE" ]; then
-        echo "$nombre|$origen|$destino|$clave" >> "$CONFIG_FILE"
+        echo "$nombre|$origen|$destino|$clave_origen|$clave_destino" >> "$CONFIG_FILE"
     else
-        echo "NOMBRE|ORIGEN|DESTINO|CLAVE DE ACCESO" >> "$CONFIG_FILE"
-        echo "$nombre|$origen|$destino|$clave" >> "$CONFIG_FILE"
+        echo "NOMBRE|ORIGEN|DESTINO|CLAVE_ORIGEN|CLAVE_DESTINO" >> "$CONFIG_FILE"
+        echo "$nombre|$origen|$destino|$clave_origen|$clave_destino" >> "$CONFIG_FILE"
     fi
     echo " Tarea añadida correctamente."
 }
@@ -271,7 +270,8 @@ ejecutar_tarea() {
 
     origen=$(echo "$linea" | awk -F '|' '{print $2}')
     destino=$(echo "$linea" | awk -F '|' '{print $3}')
-    clave=$(echo "$linea"  | awk -F '|' '{print $4}')
+    clave_origen=$(echo "$linea"  | awk -F '|' '{print $4}')
+    clave_destino=$(echo "$linea"  | awk -F '|' '{print $5}')
 
     echo ""
     echo -e "${azul} Ejecutando copia de seguridad:${borra_colores} $tarea"
@@ -285,29 +285,70 @@ ejecutar_tarea() {
         return
     fi
 
-    # --- Comprobar rsync remoto si hay clave SSH ---
-    if [[ -n "$clave" ]]; then
-        echo -e "${azul} Usando clave SSH:${borra_colores} $clave"; echo ""
+    # Detección SSH (si contiene user@host:)
+    case "$origen" in *"@"*":"* ) remoto_origen="si" ;; *) remoto_origen="no" ;; esac
+    case "$destino" in *"@"*":"* ) remoto_destino="si" ;; *) remoto_destino="no" ;; esac
 
-        # Extraer usuario y host del destino
-        remote_host=$(echo "$destino" | awk -F':' '{print $1}')
+    resultado=1
 
-        if ! ssh -i "$clave" "$remote_host" 'command -v rsync >/dev/null 2>&1'; then
-            echo -e "${rojo} Error:${amarillo} rsync no está instalado en la máquina remota.\n Conexion de maquina${borra_colores} $remote_host"
-            echo ""
-            sleep 5
-            return
+    # --- CASO: remoto → remoto (dos pasos) ---
+    if [[ "$remoto_origen" = "si" && "$remoto_destino" = "si" ]]; then
+        echo -e "${amarillo} Realizando copia remoto → remoto en dos pasos...${borra_colores}"
+        tmp="/tmp/rsync_tmp_$$"
+        mkdir -p "$tmp"
+
+        # Paso 1: origen remoto -> tmp local
+        if [[ -n "$clave_origen" ]]; then
+            rsync -avzh -e "ssh -i $clave_origen" --rsync-path="sudo rsync" "$origen" "$tmp"
+        else
+            rsync -avzh -e "ssh" --rsync-path="sudo rsync" "$origen" "$tmp"
         fi
-        sudo rsync -avzh --delete -e "ssh -i $clave" "$origen" "$destino"
-    else
-        sudo rsync -avzh --delete "$origen" "$destino"
+        if [[ $? -ne 0 ]]; then
+            echo -e "${rojo} Error copiando desde el origen remoto.${borra_colores}"
+            rm -rf "$tmp"; sleep 3; return
+        fi
+
+        # Paso 2: tmp local -> destino remoto
+        if [[ -n "$clave_destino" ]]; then
+            rsync -avzh -e "ssh -i $clave_destino" "$tmp/" "$destino"
+        else
+            rsync -avzh -e "ssh" "$tmp/" "$destino"
+        fi
+        resultado=$?
+        rm -rf "$tmp"
     fi
 
-    if [[ $? -eq 0 ]]; then
+    # --- CASO: remoto -> local ---
+    if [[ "$remoto_origen" = "si" && "$remoto_destino" = "no" ]]; then
+        if [[ -n "$clave_origen" ]]; then
+            rsync -avzh -e "ssh -i $clave_origen" --rsync-path="sudo rsync" "$origen" "$destino"
+        else
+            rsync -avzh -e "ssh" --rsync-path="sudo rsync" "$origen" "$destino"
+        fi
+        resultado=$?
+    fi
+
+    # --- CASO: local -> remoto ---
+    if [[ "$remoto_origen" = "no" && "$remoto_destino" = "si" ]]; then
+        if [[ -n "$clave_destino" ]]; then
+            rsync -avzh -e "ssh -i $clave_destino" "$origen" "$destino"
+        else
+            rsync -avzh -e "ssh" "$origen" "$destino"
+        fi
+        resultado=$?
+    fi
+
+    # --- CASO: local -> local ---
+    if [[ "$remoto_origen" = "no" && "$remoto_destino" = "no" ]]; then
+        rsync -avzh --delete "$origen" "$destino"
+        resultado=$?
+    fi
+
+    if [[ $resultado -eq 0 ]]; then
         echo ""
         echo -e "${verde} Copia completada de ${borra_colores}$tarea ${verde}correctamente.${borra_colores}"
-        #envia telegran si esta configurado
-        if [ $envio_telegram = "si" ]; then
+        #envia telegram si esta configurado
+        if [ "$envio_telegram" = "si" ]; then
             wget -O - "https://api.telegram.org/bot$BOT_TOKEN/sendMessage?chat_id=$CHAT_ID&text=Backup de $tarea ( CORRECTO )" > /dev/null 2>&1
         fi
         sleep 5
@@ -315,12 +356,13 @@ ejecutar_tarea() {
         echo ""
         echo -e "${rojo} Error en la copia ${borra_colores}$tarea"
         #envia telegram si esta configurado
-        if [ $envio_telegram = "si" ]; then
-            wget -O - "https://api.telegram.org/bot$BOT_TOKEN/sendMessage?chat_id=$CHAT_ID&text=bACKUP DE $TAREA ( FALLO )" > /dev/null 2>&1
+        if [ "$envio_telegram" = "si" ]; then
+            wget -O - "https://api.telegram.org/bot$BOT_TOKEN/sendMessage?chat_id=$CHAT_ID&text=Backup de $tarea ( FALLO )" > /dev/null 2>&1
         fi
         sleep 5
     fi
 }
+
 
 editar_fichero_configuracion_backups() {
     if [ -f $CONFIG_FILE ];then
@@ -377,7 +419,7 @@ comprobar_envio_telegram() {
 envio_a_telegram() {
     if [ -f $config_telegram ]; then
         source $config_telegram
-        if [ $envio_telegram = "si" ]; then
+        if [ "$envio_telegram" = "si" ]; then
             sed -i 's/^envio_telegram="si"/envio_telegram="no"/' $config_telegram
         else
             sed -i 's/^envio_telegram="no"/envio_telegram="si"/' $config_telegram
@@ -397,7 +439,7 @@ menu() {
         fi
         clear
         menu_info
-        echo -e "${azul} Menu de opciones de ${borra_colores}$0"; echo ""
+        echo -e "${azul} Menu de opciones de ${borra_colores}$archivo_local"; echo ""
         echo -e "${azul}  1)${borra_colores} Añadir nueva tarea"
         echo -e "${azul}  2)${borra_colores} Ejecutar una tarea"
         echo -e "${azul}  3)${borra_colores} Borrar tarea"
