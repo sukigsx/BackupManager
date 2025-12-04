@@ -27,9 +27,7 @@ Con esto puedes:
 ✔ Ejecutar una tarea manualmente desde el menú
 ✔ Ejecutar tareas desde la terminal por argumentos
 
-Ej.:
-
-./script.sh ejecutar_tarea documentos
+Ej.: ./BackupManager.sh ejecutar_tarea nombre_de_la_tarea
 
 🔄 2. Realizar las copias con rsync (automáticas según el tipo)
 
@@ -79,3 +77,16 @@ Presionando Ctrl + C el script muestra un mensaje de salida elegante.
 📌 En pocas palabras
 
 Es un gestor completo de tareas de copia de seguridad, con rsync, soporte para entornos remotos y notificaciones por Telegram.
+
+## Instalacion  
+Clonar el repositorio y ejecutar BackupManager.sh
+
+```  
+git clone https://github.com/sukigsx/BackupManager.git
+```
+
+Tambien puedes utilizar mi script (ejecutar_scripts).
+
+```  
+git clone https://github.com/sukigsx/ejecutar_scripts.git  
+```
