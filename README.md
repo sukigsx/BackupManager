@@ -1,88 +1,81 @@
-🗂️ Gestor de Copias de Seguridad con rsync — Descripción General
-
-Este script es una herramienta interactiva diseñada para gestionar copias de seguridad (backups) utilizando rsync, con soporte para entornos locales, remotos y notificaciones por Telegram.
-
 ✅ ¿Para qué sirve este script?
 
-Este script permite administrar tareas de copia de seguridad de manera sencilla y automatizada. Sus funciones principales son:
+Este script es una herramienta interactiva para gestionar copias de seguridad (backups) usando rsync, tanto locales como remotas, y con soporte opcional de notificaciones por Telegram.
 
-🔧 1. Gestión completa de tareas de backup
+En resumen, sirve para:
 
-El script permite:
+🔧 1. Crear, listar, ejecutar y borrar tareas de backup
 
-Crear nuevas tareas de backup
+El script mantiene un archivo de configuración donde guarda:
 
-Listar las tareas existentes
+Nombre de la tarea
 
-Ejecutar una tarea individual
+Carpeta de origen
 
-Borrar tareas
+Carpeta de destino
 
-Modificar los archivos de configuración
+Claves SSH para origen/destino (si hacen falta)
 
-Cada tarea incluye:
+Con esto puedes:
 
-Nombre de la copia
+✔ Añadir nuevas tareas de copia de seguridad
 
-Ruta de origen
+(local → local, local → remoto, remoto → local o remoto → remoto)
 
-Ruta de destino
+✔ Ver un listado ordenado de tus tareas
+✔ Borrar tareas que ya no usas
+✔ Ejecutar una tarea manualmente desde el menú
+✔ Ejecutar tareas desde la terminal por argumentos
 
-Clave SSH para origen (opcional)
+Ej.:
 
-Clave SSH para destino (opcional)
+./script.sh ejecutar_tarea documentos
 
-Todo se guarda en un fichero de configuración editable.
+🔄 2. Realizar las copias con rsync (automáticas según el tipo)
 
-🔄 2. Realización automática de copias con rsync
+El script detecta:
 
-El script usa rsync y detecta automáticamente el tipo de copia según el origen y destino:
+si el origen es local o remoto
 
-Local → Local
+si el destino es local o remoto
 
-Local → Remoto
+si necesita clave SSH
 
-Remoto → Local
+si rsync está instalado
 
-Remoto → Remoto
-(Hace la copia en dos pasos usando un directorio temporal.)
+Y ejecuta la copia de forma correcta en estos escenarios:
 
-También verifica si rsync está instalado y muestra errores claros si falta.
+local → local
 
-📲 3. Notificaciones por Telegram (opcional)
+local → remoto
 
-Permite configurar un bot de Telegram para recibir mensajes:
+remoto → local
 
-Cuando un backup se completa correctamente
+remoto → remoto (hace copia en dos pasos usando /tmp)
 
-Cuando ocurre un fallo
+📲 3. Enviar notificaciones por Telegram (opcional)
 
-Para enviar un mensaje de prueba
+Puedes configurarlo para que:
 
-Para activar o desactivar el envío de notificaciones
+Al completar un backup envíe un mensaje indicando si salió OK o FALLO.
 
-🛠 4. Edición sencilla de configuraciones
+Enviar un mensaje de prueba.
 
-Desde el menú puedes abrir con nano:
+Activar o desactivar las notificaciones.
 
-El fichero de tareas de backup
+🛠 4. Editar fácilmente los archivos de configuración
 
-El fichero de configuración de Telegram
+Incluye opciones para abrir con nano:
 
-🖥 5. Menú interactivo con colores
+el fichero de tareas de backup
 
-El script muestra:
+la configuración de Telegram
 
-Un menú principal fácil de navegar
+🖥 5. Menú interactivo en pantalla con colores
 
-Información del script
+Cada función se muestra con un menú limpio y coloreado.
+Presionando Ctrl + C el script muestra un mensaje de salida elegante.
 
-Listado de tareas formateado
+📌 En pocas palabras
 
-Mensajes coloreados para mayor claridad
-
-Incluye además un manejador para Ctrl + C que limpia la pantalla y muestra un mensaje elegante de salida.
-
-📌 Resumen breve
-
-Es un gestor completo de tareas de copia de seguridad con rsync, compatible con rutas locales y remotas, y con sistema opcional de notificaciones por Telegram.
+Es un gestor completo de tareas de copia de seguridad, con rsync, soporte para entornos remotos y notificaciones por Telegram.
