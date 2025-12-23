@@ -477,7 +477,7 @@ menu() {
 menu_info
 conexion
 if [ "$conexion" = "SI" ]; then
-    #actualizar_script
+    actualizar_script
     if [ "$actualizado" = "SI" ]; then
         software_necesario
         if [ "$software" = "SI" ]; then
@@ -498,7 +498,7 @@ if [ "$conexion" = "SI" ]; then
         fi
     fi
 else
-    #software_necesario
+    software_necesario
     if [ "$software" = "SI" ]; then
         export software="SI"
         export conexion="NO"
