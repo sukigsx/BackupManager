@@ -630,7 +630,7 @@ menu() {
         echo -e "${azul}  3)${borra_colores} Borrar tarea"
         echo -e "${azul}  4)${borra_colores} Editar fichero configuracion backups"
         echo -e "${azul}  5)${borra_colores} Exportar fichero copias de seguridad"
-        echo -e "${azul}  4)${borra_colores} Exportar fichero de configuracion telegram"
+        echo -e "${azul}  6)${borra_colores} Exportar fichero de configuracion telegram"
         echo -e ""
         echo -e "${azul} 10)${borra_colores} Configurar envio a telegram"
         echo -e "${azul} 11)${borra_colores} Editar fichero configuracion telegram"
