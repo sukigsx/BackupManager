@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-ruta_ejecucion=$(dirname "$(readlink -f "$0")") #es la ruta de ejecucion del script sin la / al final
-ruta_escritorio=$(xdg-user-dir DESKTOP) #es la ruta de tu escritorio sin la / al final
-
 #VARIABLES PRINCIPALES
 # con export son las variables necesarias para exportar al los siguientes script
 #variables para el menu_info
@@ -48,6 +45,7 @@ config_telegram="$ruta_ejecucion/telegram.conf"
         [find]="find"
         [rsync]="rsync"
         [ssh]="ssh"
+        [xdg-user-dirs]="xdg-user-dirs"
     )
 
 #toma el control al pulsar control + c
