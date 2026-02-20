@@ -1,28 +1,17 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-
-#VARIABLES PRINCIPALES
-# con export son las variables necesarias para exportar al los siguientes script
-#variables para el menu_info
-
-export NombreScript="BackupManager.sh"
-export DescripcionDelScript="Herramienta para copias de seguridad"
-export Correo="scripts@mbbsistemas.es"
-export Web="https://repositorio.mbbsistemas.es"
+ruta_ejecucion=$(dirname "$(readlink -f "$0")") #es la ruta de ejecucion del script sin la / al final
+ruta_escritorio=$(xdg-user-dir DESKTOP) #es la ruta de tu escritorio sin la / al final
 export version="1.0"
 conexion="Sin comprobar"
 software="Sin comprobar"
 actualizado="No se ha podido comprobar la actualizacion del script"
-paqueteria="No detectada"
+archivo_local="BackupManager.sh" # Nombre del archivo local para comprobar la actualizacion
+ruta_repositorio="https://github.com/sukigsx/BackupManager.git" #ruta del repositorio para actualizar y clonar con git clone
+descripcion="Herramienta para copias de seguridad"
 
-# VARIABLE QUE RECOJEN LAS RUTAS
-ruta_ejecucion=$(dirname "$(readlink -f "$0")") #es la ruta de ejecucion del script sin la / al final
-ruta_escritorio=$(xdg-user-dir DESKTOP) #es la ruta de tu escritorio sin la / al final
-
-# VARIABLES PARA LA ACTUALIZAION CON GITHUB
-NombreScriptActualizar="BackupManager.sh" #contiene el nombre del script para poder actualizar desde github
-DireccionGithub="https://github.com/sukigsx/BackupManager.git" #contiene la direccion de github para actualizar el script
-nombre_carpeta_repositorio="BackupManager" #poner el nombre de la carpeta cuando se clona el repo para poder eliminarla
+CONFIG_FILE="$ruta_ejecucion/backups.conf"
+config_telegram="$ruta_ejecucion/telegram.conf"
 
 #VARIABLES DE SOFTWARE NECESARIO
 # Asociamos comandos con el paquete que los contiene [comando a comprobar]="paquete a instalar"
@@ -30,149 +19,55 @@ nombre_carpeta_repositorio="BackupManager" #poner el nombre de la carpeta cuando
     requeridos=(
         [git]="git"
         [nano]="nano"
-        [diff]="diff"
-        [sudo]="sudo"
-        [ping]="ping"
-        [fzf]="fzf"
         [curl]="curl"
-        [grep]="grep"
-        [jq]="jq"
-        [sed]="sed"
+        [diff]="diff"
+        [ping]="ping"
         [find]="find"
         [rsync]="rsync"
         [ssh]="ssh"
     )
 
-
-#colores
-rojo="\e[0;31m\033[1m" #rojo
-verde="\e[;32m\033[1m"
-azul="\e[0;34m\033[1m"
-amarillo="\e[0;33m\033[1m"
-rosa="\e[0;35m\033[1m"
-turquesa="\e[0;36m\033[1m"
-borra_colores="\033[0m\e[0m" #borra colores
-
-#toma el control al pulsar control + c
-trap ctrl_c INT
-function ctrl_c()
-{
-clear
-echo ""
-echo -e "${azul} GRACIAS POR UTILIZAR MI SCRIPT${borra_colores}"
-echo ""
-sleep 1
-exit
-}
-
-menu_info(){
-# muestra el menu de sukigsx
-echo ""
-echo -e "${rosa}            _    _                  ${azul}   Nombre del script${borra_colores} $NombreScript"
-echo -e "${rosa}  ___ _   _| | _(_) __ _ _____  __  ${azul}   Descripcion${borra_colores} $DescripcionDelScript"
-echo -e "${rosa} / __| | | | |/ / |/ _\ / __\ \/ /  ${azul}   Version            =${borra_colores} $version"
-echo -e "${rosa} \__ \ |_| |   <| | (_| \__ \>  <   ${azul}   Conexion Internet  =${borra_colores} $conexion"
-echo -e "${rosa} |___/\__,_|_|\_\_|\__, |___/_/\_\  ${azul}   Software necesario =${borra_colores} $software"
-echo -e "${rosa}                  |___/             ${azul}   Actualizado        =${borra_colores} $actualizado"
-echo -e "${rosa}                                    ${azul}   Sistema paqueteria =${borra_colores} $paqueteria"
-echo -e ""
-echo -e "${azul} Contacto:${borra_colores} ( Correo${rosa} $Correo${borra_colores} ) ( Web${rosa} $Web${borra_colores} )${borra_colores}"
-echo ""
-echo -e "${azul} Ip de la red:${borra_colores} $(ip -4 addr show | grep inet | grep -v 127.0.0.1 | awk '{print $2}' | cut -d/ -f1) ${azul} Ip de internet:${borra_colores} $(curl -s https://icanhazip.com)"
-}
-
-
 actualizar_script(){
-    # actualizar el script
-    #para que esta funcion funcione necesita:
-    #   conexion a internet
-    #   la paleta de colores
-    #   software: git diff
-
-    git clone $DireccionGithub /tmp/comprobar >/dev/null 2>&1
-
-    diff $ruta_ejecucion/$NombreScriptActualizar /tmp/comprobar/$NombreScriptActualizar >/dev/null 2>&1
-
-
-    if [ $? = 0 ]
-    then
-        #esta actualizado, solo lo comprueba
-        echo ""
-        echo -e "${verde} El script${borra_colores} $0 ${verde}esta actualizado.${borra_colores}"
-        echo ""
-        chmod -R +w /tmp/comprobar
-        rm -R /tmp/comprobar
-        actualizado="SI"
-        sleep 2
-    else
-        #hay que actualizar, comprueba y actualiza
-        echo ""
-        echo -e "${amarillo} EL script${borra_colores} $0 ${amarillo}NO esta actualizado.${borra_colores}"
-        echo -e "${verde} Se procede a su actualizacion automatica.${borra_colores}"
-        sleep 3
-        cp -r /tmp/comprobar/* $ruta_ejecucion
-        chmod -R +w /tmp/comprobar
-        rm -R /tmp/comprobar
-        echo ""
-        echo -e "${verde} El script se ha actualizado.${amarillo} Es necesario cargarlo de nuevo.${borra_colores}"
-        echo ""
-        sleep 2
-        exit
-    fi
-}
-
-
-software_necesario(){
-#funcion software necesario
-#para que funcione necesita:
+#actualizar el script
+#para que esta funcion funcione necesita:
 #   conexion a internet
 #   la paleta de colores
-#   software: which
-paqueteria
-echo ""
-echo -e "${azul} Comprobando el software necesario.${borra_colores}"
-echo ""
-#which git diff ping figlet xdotool wmctrl nano fzf
-#########software="which git diff ping figlet nano gdebi curl konsole" #ponemos el foftware a instalar separado por espacion dentro de las comillas ( soft1 soft2 soft3 etc )
-for comando in "${!requeridos[@]}"; do
-        command -v $comando &>/dev/null
-        sino=$?
-        contador=1
-        while [ $sino -ne 0 ]; do
-            if [ $contador -ge 4 ] || [ "$conexion" = "no" ]; then
-                clear
-                menu_info
-                echo -e " ${amarillo}NO se puede ejecutar el script sin los paquetes necesarios ${rojo}${requeridos[$comando]}${amarillo}.${borra_colores}"
-                echo -e " ${amarillo}NO se ha podido instalar ${rojo}${requeridos[$comando]}${amarillo}.${borra_colores}"
-                echo -e " ${amarillo}Inténtelo usted con: (${borra_colores}$instalar${requeridos[$comando]}${amarillo})${borra_colores}"
-                echo -e ""
-                echo -e "${azul} Listado de los paquetes necesarios para poder ejecutar el script:${borra_colores}"
-                for elemento in "${requeridos[@]}"; do
-                    echo -e "     $elemento"
-                done
-                echo ""
-                echo -e " ${rojo}No se puede ejecutar el script sin todo el software necesario.${borra_colores}"
-                echo ""
-                exit 1
-            else
-                echo -e "${amarillo} Se necesita instalar ${borra_colores}$comando${amarillo} para la ejecucion del script${borra_colores}"
-                ### check_root
-                echo " Instalando ${requeridos[$comando]}. Intento $contador/3."
-                $instalar ${requeridos[$comando]} &>/dev/null
-                let "contador=contador+1"
-                command -v $comando &>/dev/null
-                sino=$?
-            fi
-        done
-        echo -e " [${verde}ok${borra_colores}] $comando (${requeridos[$comando]})."
-    done
+#   software: git diff xdotool
 
+
+# Obtener la ruta del script
+descarga=$(dirname "$(readlink -f "$0")")
+git clone $ruta_repositorio /tmp/comprobar >/dev/null 2>&1
+
+diff $descarga/$archivo_local /tmp/comprobar/$archivo_local >/dev/null 2>&1
+
+
+if [ $? = 0 ]
+then
+    #esta actualizado, solo lo comprueba
     echo ""
-    echo -e "${azul} Todo el software ${verde}OK${borra_colores}"
-    software="SI"
+    echo -e "${verde} El script${borra_colores} $0 ${verde}esta actualizado.${borra_colores}"
+    echo ""
+    chmod -R +w /tmp/comprobar
+    rm -R /tmp/comprobar
+    actualizado="SI"
     sleep 2
+else
+    #hay que actualizar, comprueba y actualiza
+    echo ""
+    echo -e "${amarillo} EL script${borra_colores} $0 ${amarillo}NO esta actualizado.${borra_colores}"
+    echo -e "${verde} Se procede a su actualizacion automatica.${borra_colores}"
+    sleep 3
+    cp -r /tmp/comprobar/* $descarga
+    chmod -R +w /tmp/comprobar
+    rm -R /tmp/comprobar
+    echo ""
+    echo -e "${amarillo} El script se ha actualizado, es necesario cargarlo de nuevo.${borra_colores}"
+    echo ""
+    sleep 2
+    exit
+fi
 }
-
 
 conexion(){
 #funcion de comprobar conexion a internet
@@ -180,7 +75,6 @@ conexion(){
 #   conexion ainternet
 #   la paleta de colores
 #   software: ping
-
 if ping -c1 google.com &>/dev/null
 then
     conexion="SI"
@@ -193,107 +87,85 @@ else
 fi
 }
 
-# Función que comprueba si se ejecuta como root
-check_root() {
-    #clear
-    #menu_info
-  if [ "$EUID" -ne 0 ]; then
-    #echo ""
-    #echo -e "${amarillo} Se necesita privilegios de root ingresa la contraseña.${borra_colores}"
+software_necesario(){
+#funcion software necesario
+#para que funcione necesita:
+#   conexion a internet
+#   la paleta de colores
+#   software: which
 
-    # Pedir contraseña para sudo
-    #echo -e ""
-
-    # Validar contraseña mediante sudo -v (verifica sin ejecutar comando)
-    if sudo -v; then
-      echo ""
-      echo -e "${verde} Autenticación correcta. Ejecutando como root...${borra_colores}"; sleep 2
-      # Reejecuta el script como root
-      #exec sudo "$0" "$@"
-    else
-      clear
-      menu_info
-      echo -e "${rojo} Contraseña incorrecta o acceso denegado. Saliendo del script.${borra_colores}"
-      echo ""
-      echo -e "${azul} Listado de los paquetes necesarios para poder ejecutar el script:${borra_colores}"
-      for elemento in "${requeridos[@]}"; do
-        echo -e "     $elemento"
-      done
-      echo ""
-      echo -e "${azul} GRACIAS POR UTILIZAR MI SCRIPT${borra_colores}"
-     echo ""; exit
-    fi
-  fi
-}
-
-#funcion de detectar sistema de paquetado para instalar
-paqueteria(){
-echo -e "${azul} Detectando sistema de paquetería...${borra_colores}"
 echo ""
+echo -e "${azul} Comprobando el software necesario.${borra_colores}"
+echo ""
+#which git diff ping figlet xdotool wmctrl nano fzf
+#########software="which git diff ping figlet nano gdebi curl konsole" #ponemos el foftware a instalar separado por espacion dentro de las comillas ( soft1 soft2 soft3 etc )
+for comando in "${!requeridos[@]}"; do
+        which $comando &>/dev/null
+        sino=$?
+        contador=1
+        while [ $sino -ne 0 ]; do
+            if [ $contador -ge 4 ] || [ "$conexion" = "no" ]; then
+                clear
+                echo ""
+                echo -e " ${amarillo}NO se ha podido instalar ${rojo}${requeridos[$comando]}${amarillo}.${borra_colores}"
+                echo -e " ${amarillo}Inténtelo usted con: (${borra_colores}sudo apt install ${requeridos[$comando]}${amarillo})${borra_colores}"
+                echo -e ""
+                echo -e " ${rojo}No se puede ejecutar el script sin el software necesario.${borra_colores}"
+                echo ""; read p
+                echo ""
+                exit 1
+            else
+                echo " Instalando ${requeridos[$comando]}. Intento $contador/3."
+                sudo apt install ${requeridos[$comando]} -y &>/dev/null
+                let "contador=contador+1"
+                which $comando &>/dev/null
+                sino=$?
+            fi
+        done
+        echo -e " [${verde}ok${borra_colores}] $comando (${requeridos[$comando]})."
+    done
 
-if command -v apt >/dev/null 2>&1; then
-    echo -e "${verde} Sistema de paquetería detectado: APT (Debian, Ubuntu, Mint, etc.)${borra_colores}"
-    instalar="sudo apt install -y "
-    paqueteria="apt"
-
-elif command -v dnf >/dev/null 2>&1; then
-    echo -e "${cerde} Sistema de paquetería detectado: DNF (Fedora, RHEL, Rocky, AlmaLinux)${borra_colores}"
-    instalar="sudo dnf install -y "
-    paqueteria="dnf"
-
-elif command -v yum >/dev/null 2>&1; then
-    echo -e "${verde}Sistema de paquetería detectado: YUM (CentOS, RHEL antiguos)${borra_colores}"
-    instalar="sudo yum install -y "
-    paqueteria="yum"
-
-elif command -v pacman >/dev/null 2>&1; then
-    echo -e "${verde} Sistema de paquetería detectado: Pacman (Arch Linux, Manjaro)${borra_colores}"
-    instalar="sudo pacman -S --noconfirm "
-    paqueteria="pacman"
-
-elif command -v zypper >/dev/null 2>&1; then
-    echo -e "${verde} Sistema de paquetería detectado: Zypper (openSUSE)${borra_colores}"
-    instalar="sudo zypper install -y "
-    paqueteria="zypper"
-
-elif command -v apk >/dev/null 2>&1; then
-    echo -e "${verde}Sistema de paquetería detectado: APK (Alpine Linux)${borra_colores}"
-    instalar="sudo apk add --no-interactive "
-    paqueteria="apk"
-
-elif command -v emerge >/dev/null 2>&1; then
-    echo -e "${verde}Sistema de paquetería detectado: Portage (Gentoo)${borra_colores}"
-    instalar="sudo emerge -av "
-    paqueteria="emerge"
-
-else
-    echo -e "${amarillo} No se pudo detectar un sistema de paquetería conocido.${borra_colores}"
-    paqueteria="${rojo}Desconocido${borra_colores}"
-fi
-sleep 2
+    echo ""
+    echo -e "${azul} Todo el software ${verde}OK${borra_colores}"
+    software="SI"
+    sleep 2
 }
 
+#colores
+#ejemplo: echo -e "${verde} La opcion (-e) es para que pille el color.${borra_colores}"
+rojo="\e[0;31m\033[1m" #rojo
+verde="\e[;32m\033[1m"
+azul="\e[0;34m\033[1m"
+amarillo="\e[0;33m\033[1m"
+rosa="\e[0;35m\033[1m"
+turquesa="\e[0;36m\033[1m"
+borra_colores="\033[0m\e[0m" #borra colores
 
-#comprobar si se ejecuta en una terminal bash
-terminal_bash() {
-
-    shell_actual="$(ps -p $$ -o comm=)"
-
-    if [ "$shell_actual" != "bash" ]; then
-        echo -e "${amarillo} Este script ${rojo}NO${amarillo} se está ejecutando en Bash.${borra_colores}"
-        echo -e "   Shell detectado: ${rojo}$shell_actual${borra_colores}"
-        echo -e "   Puede ocasionar problemas ya que solo está pensado para bash."
-        echo -e "   ${rojo}No${borra_colores} se procede con la instalación ni la ejecución."
-        echo ""
-        echo -e "${azul} GRACIAS POR UTILIZAR MI SCRIPT${borra_colores}"
-        echo ""
-        exit 1
-    fi
+menu_info(){
+clear
+echo ""
+echo -e "${rosa}            _    _                  ${azul}   Nombre del script  =${borra_colores} $archivo_local"
+echo -e "${rosa}  ___ _   _| | _(_) __ _ _____  __  ${azul}   Descripcion        =${borra_colores} $descripcion"
+echo -e "${rosa} / __| | | | |/ / |/ _\ / __\ \/ /  ${azul}   Version            =${borra_colores} $version"
+echo -e "${rosa} \__ \ |_| |   <| | (_| \__ \>  <   ${azul}   Conexion Internet  =${borra_colores} $conexion"
+echo -e "${rosa} |___/\__,_|_|\_\_|\__, |___/_/\_\  ${azul}   Software necesario =${borra_colores} $software"
+echo -e "${rosa}                  |___/             ${azul}   Actualizado        =${borra_colores} $actualizado"
+echo -e ""
+echo -e "${azul} Contacto:${borra_colores} (Correo scripts@mbbsistemas.com) (Web https://repositorio.mbbsistemas.es)${borra_colores}"
+echo ""
 }
 
+#toma el control al pulsar control + c
+trap ctrl_c INT
+function ctrl_c()
+{
+clear
+echo ""
+echo -e " ${verde}- Gracias por utilizar mi script -${borra_colores}"
+echo ""
+exit
+}
 
-
-# Funciones del script propio
 listar_tareas() {
     # comprobamos que el fichero de configuracion esta, sino se crea
     if [ -f "$CONFIG_FILE" ]; then
@@ -601,6 +473,7 @@ menu() {
     done
 }
 
+#EMPIEZA LO GORDO
 menu_info
 conexion
 if [ "$conexion" = "SI" ]; then
@@ -636,7 +509,6 @@ else
 fi
 
 # --- MODO ARGUMENTOS ---
-
 if [ $# -gt 0 ]; then
     case "$1" in
         listar) listar_tareas ;;
@@ -653,7 +525,4 @@ if [ $# -gt 0 ]; then
     esac
     exit
 fi
-CONFIG_FILE="$ruta_ejecucion/backups.conf"
-config_telegram="$ruta_ejecucion/telegram.conf"
 menu
-
