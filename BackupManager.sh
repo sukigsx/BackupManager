@@ -363,7 +363,9 @@ agregar_tarea() {
             if [[ "$sino" == "s" || "$sino" == "S" ]]; then
                 mkdir -p /home/$(whoami)/$destino
                 if [ $? = 0 ]; then
-                    :
+                    destino="/home/$(whoami)/$destino"
+                    echo $destino
+                    read p
                 else
                     echo ""
                     echo -e "${rojo} Fallo al crear la o las carpetas destino${borra_colores} $destino"
