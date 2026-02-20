@@ -27,6 +27,14 @@ nombre_carpeta_repositorio="BackupManager" #poner el nombre de la carpeta cuando
 CONFIG_FILE="$ruta_ejecucion/backups.conf"
 config_telegram="$ruta_ejecucion/telegram.conf"
 
+#colores
+rojo="\e[0;31m\033[1m" #rojo
+verde="\e[;32m\033[1m"
+azul="\e[0;34m\033[1m"
+amarillo="\e[0;33m\033[1m"
+rosa="\e[0;35m\033[1m"
+turquesa="\e[0;36m\033[1m"
+borra_colores="\033[0m\e[0m" #borra colores
 
 #VARIABLES DE SOFTWARE NECESARIO
 # Asociamos comandos con el paquete que los contiene [comando a comprobar]="paquete a instalar"
@@ -601,6 +609,7 @@ menu() {
 }
 
 #EMPIEZA LO GORDO
+clear
 menu_info
 conexion
 if [ "$conexion" = "SI" ]; then
