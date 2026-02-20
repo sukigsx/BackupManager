@@ -620,7 +620,7 @@ exportar_ficfero_copias_seguridad(){
     echo -e "${azul} Exportar dichero copias de seguridad${borra_colores}"
     echo ""
     cp $CONFIG_FILE /home/$(whoami)/
-    if [ -f $ruta_escritorio/backups.conf ]; then
+    if [ -f $/home/$(whoami)/backups.conf ]; then
         echo -e "${verde} Exportacion de (${borra_colores}backups.conf${verde}) en $HOME${borra_colores}"
         sleep 5
     else
