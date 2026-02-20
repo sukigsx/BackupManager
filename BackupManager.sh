@@ -334,6 +334,12 @@ agregar_tarea() {
     echo -e " ${azul}Añadir nueva tarea de copia de seguridad${borra_colores}"
     echo ""
     read -p " Nombre de la tarea: " nombre
+        #comprueba si existe el nombre de la tarea
+        if grep -q "^$nombre|" "$CONFIG_FILE"; then
+            echo ""
+            echo -e "${amarillo} El nombre de tarea${borra_colores} $nombre ${amarillo}ya existe ${borra_colores}"
+            sleep 5; return
+        fi
     read -p " Ruta de origen (local o user@host:/ruta): " origen
     read -p " Ruta de destino (local o user@host:/ruta): " destino
     read -p " Clave SSH origen (o dejar vacío si no aplica): " clave_origen
@@ -581,11 +587,13 @@ menu() {
         echo -e "${azul}  2)${borra_colores} Ejecutar una tarea"
         echo -e "${azul}  3)${borra_colores} Borrar tarea"
         echo -e "${azul}  4)${borra_colores} Editar fichero configuracion backups"
+        echo -e "${azul}  5)${borra_colores} Exportar fichero copias de seguridad"
+        echo -e "${azul}  4)${borra_colores} Exportar fichero de configuracion telegram"
         echo -e ""
-        echo -e "${azul}  5)${borra_colores} Configurar envio a telegram"
-        echo -e "${azul}  6)${borra_colores} Editar fichero configuracion telegram"
-        echo -e "${azul}  7)${borra_colores} Envio de prueba a telegram"
-        echo -e "${azul}  8)${borra_colores} Activar/Desactivar envio a telegram"
+        echo -e "${azul} 10)${borra_colores} Configurar envio a telegram"
+        echo -e "${azul} 11)${borra_colores} Editar fichero configuracion telegram"
+        echo -e "${azul} 12)${borra_colores} Envio de prueba a telegram"
+        echo -e "${azul} 13)${borra_colores} Activar/Desactivar envio a telegram"
         echo ""
         echo -e "${azul} 99)${borra_colores} Salir"
         echo ""; echo -e "${azul} (Telegram configurado =${borra_colores} $configurado_telegram${azul}) (Envio notificaciones =${borra_colores} $envio_telegram${azul})${borra_colores}"
@@ -599,10 +607,10 @@ menu() {
             2) ejecutar_tarea ;;
             3) borrar_tarea ;;
             4) editar_fichero_configuracion_backups ;;
-            5) configurar_telegram ;;
-            6) editar_fichero_configuracion_telegram ;;
-            7) comprobar_envio_telegram ;;
-            8) envio_a_telegram ;;
+            10) configurar_telegram ;;
+            11) editar_fichero_configuracion_telegram ;;
+            12) comprobar_envio_telegram ;;
+            13) envio_a_telegram ;;
             99) ctrl_c ;;
             *) echo -e "\033[1A\033[2K${amarillo} Opción no válida${borra_colores}"; sleep 2 ;;
         esac
