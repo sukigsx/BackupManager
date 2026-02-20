@@ -614,6 +614,20 @@ envio_a_telegram() {
     fi
 }
 
+exportar_ficfero_copias_seguridad(){
+    menu_info
+    echo -e "${azul} Exportar dichero copias de seguridad${borra_colores}"
+    echo ""
+    cp $CONFIG_FILE $ruta_escritorio
+    if [ -f $ruta_escritorio/backups.conf ]; then
+        echo -e "${verde} Exportacion de (${borra_colores}backups.conf${verde}) a tu escritorio${borra_colores}"
+        sleep 3
+    else
+        echo -e "${rojo} Fallo${amarillo} de esportacion de (${borra_colores}backups.conf${amarillo}) a tu escritorio${borra_colores}"
+        sleep 3
+    fi
+}
+
 menu() {
     while true; do
         if [ -f $config_telegram ]; then
@@ -649,6 +663,7 @@ menu() {
             2) ejecutar_tarea ;;
             3) borrar_tarea ;;
             4) editar_fichero_configuracion_backups ;;
+            5) exportar_ficfero_copias_seguridad ;;
             10) configurar_telegram ;;
             11) editar_fichero_configuracion_telegram ;;
             12) comprobar_envio_telegram ;;
