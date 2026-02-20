@@ -83,6 +83,7 @@ echo -e ""
 echo -e "${azul} Contacto:${borra_colores} ( Correo${rosa} $Correo${borra_colores} ) ( Web${rosa} $Web${borra_colores} )${borra_colores}"
 echo ""
 echo -e "${azul} Ip de la red:${borra_colores} $(ip -4 addr show | grep inet | grep -v 127.0.0.1 | awk '{print $2}' | cut -d/ -f1) ${azul} Ip de internet:${borra_colores} $(curl -s https://icanhazip.com)"
+echo ""
 }
 
 
@@ -328,11 +329,10 @@ listar_tareas() {
 }
 
 agregar_tarea() {
-    echo ""
     clear
     menu_info
-    echo ""
     listar_tareas
+    echo ""
     echo -e " ${azul}Añadir nueva tarea de copia de seguridad${borra_colores}"
     echo ""
     read -p " Nombre de la tarea: " nombre
