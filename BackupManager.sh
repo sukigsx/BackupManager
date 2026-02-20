@@ -349,9 +349,10 @@ agregar_tarea() {
             echo -e "${amarillo} La ruta ${borra_colores} $origen ${rojo}NO ${amarillo}existe ${borra_colores}"
             sleep 4; return
         fi
-    echo -e " La ruta de destino tiene que estar dentro de tu $HOME"
-    echo -e " ejemplos (destino_de_backup)"
-    echo -e "          (copias/destino_de_backup)"
+    echo ""
+    echo -e "${amarillo} La ruta de destino tiene que estar dentro de tu${borra_colores} $HOME"
+    echo -e "${azul} ejemplos (${borra_colores}destino_de_backup${azul})${borra_colores}"
+    echo -e "${azul}          (${borra_colores}copias/destino_de_backup${azul})${borra_colores}"
     echo ""
     read -p " Ruta de destino, (local o user@host:/ruta): " destino
         #comprobamos si existe la ruta destino dentro de su homey si no existe le preguntamos si la creamos
@@ -360,7 +361,14 @@ agregar_tarea() {
             echo -e "${amarillo} La ruta ${borra_colores} $destino ${rojo}NO ${amarillo}existe ${borra_colores}"
             read -p " Quieres crear la ruta $destino (s/n): " sino
             if [[ "$sino" == "s" || "$sino" == "S" ]]; then
-                mkdir $destino
+                mkdir -p $destino
+                if [ $? = 0 ]; then
+                    :
+                else
+                    echo ""
+                    echo -e "${rojo} Fallo al crear la o las carpetas destino${borra_colores} $destino"
+                    sleep 4; return
+                fi
             else
                 return
             fi
