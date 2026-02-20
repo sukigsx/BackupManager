@@ -45,7 +45,7 @@ config_telegram="$ruta_ejecucion/telegram.conf"
         [find]="find"
         [rsync]="rsync"
         [ssh]="ssh"
-        [xdg-user-dirs]="xdg-user-dirs"
+        [xdg-user-dir]="xdg-user-dirs"
     )
 
 #toma el control al pulsar control + c
