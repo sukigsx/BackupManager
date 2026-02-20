@@ -335,7 +335,10 @@ agregar_tarea() {
     echo ""
     echo -e " ${azul}Añadir nueva tarea de copia de seguridad${borra_colores}"
     echo ""
-    read -p " Nombre de la tarea: " nombre
+    read -p " Nombre de la tarea: (99 = Atras)" nombre
+        if [ $nombre = "99" ]; then
+            return
+        if
         #comprueba si existe el nombre de la tarea
         if grep -q "^$nombre|" "$CONFIG_FILE"; then
             echo ""
@@ -364,8 +367,6 @@ agregar_tarea() {
                 mkdir -p /home/$(whoami)/$destino
                 if [ $? = 0 ]; then
                     destino="/home/$(whoami)/$destino"
-                    echo $destino
-                    read p
                 else
                     echo ""
                     echo -e "${rojo} Fallo al crear la o las carpetas destino${borra_colores} $destino"
