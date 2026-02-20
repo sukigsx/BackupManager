@@ -306,7 +306,7 @@ terminal_bash() {
 listar_tareas() {
     # comprobamos que el fichero de configuracion esta, sino se crea
     if [ -f "$CONFIG_FILE" ]; then
-        echo ""
+        #echo ""
     else
         touch "$CONFIG_FILE"
         echo "NOMBRE|ORIGEN|DESTINO|CLAVE_ORIGEN|CLAVE_DESTINO" >> "$CONFIG_FILE"
