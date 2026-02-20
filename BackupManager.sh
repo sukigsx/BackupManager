@@ -349,14 +349,18 @@ agregar_tarea() {
             echo -e "${amarillo} La ruta ${borra_colores} $origen ${rojo}NO ${amarillo}existe ${borra_colores}"
             sleep 4; return
         fi
-    read -p " Ruta de destino (local o user@host:/ruta): " destino
-        #comprobamos si existe la ruta destino y si no existe le preguntamos si la creamos
-        if [ ! -e "$destino" ]; then
+    echo -e " La ruta de destino tiene que estar dentro de tu $HOME"
+    echo -e " ejemplos (destino_de_backup)"
+    echo -e "          (copias/destino_de_backup)"
+    echo ""
+    read -p " Ruta de destino, (local o user@host:/ruta): " destino
+        #comprobamos si existe la ruta destino dentro de su homey si no existe le preguntamos si la creamos
+        if [ ! -e "/home/$(whoami)/$destino" ]; then
             echo ""
             echo -e "${amarillo} La ruta ${borra_colores} $destino ${rojo}NO ${amarillo}existe ${borra_colores}"
             read -p " Quieres crear la ruta $destino (s/n): " sino
             if [[ "$sino" == "s" || "$sino" == "S" ]]; then
-                sudo mkdir $destino
+                mkdir $destino
             else
                 return
             fi
