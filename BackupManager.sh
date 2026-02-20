@@ -350,6 +350,17 @@ agregar_tarea() {
             sleep 4; return
         fi
     read -p " Ruta de destino (local o user@host:/ruta): " destino
+        #comprobamos si existe la ruta destino y si no existe le preguntamos si la creamos
+        if [ ! -e "$destino" ]; then
+            echo ""
+            echo -e "${amarillo} La ruta ${borra_colores} $origen ${rojo}NO ${amarillo}existe ${borra_colores}"
+            read -p " Quieres crear la ruta $destino (s/n): " sino
+            if [[ "$respuesta" == "s" || "$respuesta" == "si" ]]; then
+                sudo mkdir $destino
+            else
+                return
+            fi
+        fi
     read -p " Clave SSH origen (o dejar vacío si no aplica): " clave_origen
     read -p " Clave SSH destino (o dejar vacío si no aplica): " clave_destino
 
