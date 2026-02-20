@@ -331,6 +331,8 @@ agregar_tarea() {
     echo ""
     clear
     menu_info
+    echo ""
+    listar_tareas
     echo -e " ${azul}Añadir nueva tarea de copia de seguridad${borra_colores}"
     echo ""
     read -p " Nombre de la tarea: " nombre
