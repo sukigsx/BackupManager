@@ -361,7 +361,7 @@ agregar_tarea() {
             echo -e "${amarillo} La ruta ${borra_colores} $destino ${rojo}NO ${amarillo}existe ${borra_colores}"
             read -p " Quieres crear la ruta $destino (s/n): " sino
             if [[ "$sino" == "s" || "$sino" == "S" ]]; then
-                mkdir -p $destino
+                mkdir -p /home/$(whoami)/$destino
                 if [ $? = 0 ]; then
                     :
                 else
