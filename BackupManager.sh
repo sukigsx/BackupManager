@@ -340,9 +340,15 @@ agregar_tarea() {
         if grep -q "^$nombre|" "$CONFIG_FILE"; then
             echo ""
             echo -e "${amarillo} El nombre de tarea${borra_colores} $nombre ${amarillo}ya existe ${borra_colores}"
-            sleep 5; return
+            sleep 4; return
         fi
     read -p " Ruta de origen (local o user@host:/ruta): " origen
+        #comprobar si existe la ruta
+        if [ ! -e "$origen" ]; then
+            echo ""
+            echo -e "${amarillo} La ruta ${borra_colores} $origen ${rojo}NO ${amarillo}existe ${borra_colores}"
+            sleep 4; return
+        fi
     read -p " Ruta de destino (local o user@host:/ruta): " destino
     read -p " Clave SSH origen (o dejar vacío si no aplica): " clave_origen
     read -p " Clave SSH destino (o dejar vacío si no aplica): " clave_destino
