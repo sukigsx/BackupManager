@@ -597,7 +597,7 @@ comprobar_envio_telegram() {
         echo -e "${verde} Comando enviado${borra_colores}"; sleep 2
     else
         echo ""
-        echo -e "${amarillo} No tienes configurado el envio a telegram${borra_colores}"; sleep 2
+        echo -e "${amarillo} No tienes configurado el envio a telegram${borra_colores}"; sleep 3
     fi
 }
 
@@ -610,7 +610,7 @@ envio_a_telegram() {
             sed -i 's/^envio_telegram="no"/envio_telegram="si"/' $config_telegram
         fi
     else
-        echo "no esta configurado el telegram"; sleep 5
+        echo -e "${amarillo} No esta configurado el telegram${borra_colores}"; sleep 3
     fi
 }
 
