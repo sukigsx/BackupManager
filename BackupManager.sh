@@ -615,16 +615,17 @@ envio_a_telegram() {
 }
 
 exportar_ficfero_copias_seguridad(){
+    clear
     menu_info
     echo -e "${azul} Exportar dichero copias de seguridad${borra_colores}"
     echo ""
-    cp $CONFIG_FILE $ruta_escritorio
+    cp $CONFIG_FILE /home/$(whoami)/
     if [ -f $ruta_escritorio/backups.conf ]; then
-        echo -e "${verde} Exportacion de (${borra_colores}backups.conf${verde}) a tu escritorio${borra_colores}"
-        sleep 3
+        echo -e "${verde} Exportacion de (${borra_colores}backups.conf${verde}) en $HOME${borra_colores}"
+        sleep 5
     else
-        echo -e "${rojo} Fallo${amarillo} de esportacion de (${borra_colores}backups.conf${amarillo}) a tu escritorio${borra_colores}"
-        sleep 3
+        echo -e "${rojo} Fallo${amarillo} de esportacion de (${borra_colores}backups.conf${amarillo}) $HOME ${borra_colores}"
+        sleep 5
     fi
 }
 
