@@ -54,6 +54,7 @@ borra_colores="\033[0m\e[0m" #borra colores
         [rsync]="rsync"
         [ssh]="ssh"
         [xdg-user-dir]="xdg-user-dirs"
+        [wget]="wget"
     )
 
 #toma el control al pulsar control + c
