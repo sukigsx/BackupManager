@@ -617,14 +617,36 @@ envio_a_telegram() {
 exportar_ficfero_copias_seguridad(){
     clear
     menu_info
-    echo -e "${azul} Exportar dichero copias de seguridad${borra_colores}"
+    echo -e "${azul} Exportar fichero copias de seguridad${borra_colores}"
     echo ""
     cp $CONFIG_FILE /home/$(whoami)/
     if [ -f /home/$(whoami)/backups.conf ]; then
-        echo -e "${verde} Exportacion de (${borra_colores}backups.conf${verde}) en $HOME${borra_colores}"
+        echo -e "${verde} [OK] Exportacion de (${borra_colores}backups.conf${verde}) en $HOME${borra_colores}"
         sleep 5
     else
         echo -e "${rojo} Fallo${amarillo} de esportacion de (${borra_colores}backups.conf${amarillo}) $HOME ${borra_colores}"
+        sleep 5
+    fi
+}
+
+exportar_fichero_configuracion_telegram(){
+    clear
+    menu_info
+    echo -e "${azul} Exportar fichero configuracion de telegram${borra_colores}"
+    echo ""
+     if [ -f $config_telegram ]; then
+        cp $config_telegram /home/$(whoami)/
+        if [ -f /home/$(whoami)/telegram.conf ]; then
+            echo -e "${verde} [OK] Exportacion de (${borra_colores}telegram.conf${verde}) en $HOME${borra_colores}"
+            sleep 5
+        else
+            echo -e "${rojo} Fallo${amarillo} de esportacion de (${borra_colores}telegram.conf${amarillo}) $HOME ${borra_colores}"
+            sleep 5
+        fi
+    else
+        echo ""
+        echo -e "${amarillo} No tienes configurado el envio a telegram${borra_colores}"
+        echo -e "${rojo} No se puede exportar${borra_colores}"
         sleep 5
     fi
 }
@@ -665,6 +687,7 @@ menu() {
             3) borrar_tarea ;;
             4) editar_fichero_configuracion_backups ;;
             5) exportar_ficfero_copias_seguridad ;;
+            6) exportar_fichero_configuracion_telegram ;;
             10) configurar_telegram ;;
             11) editar_fichero_configuracion_telegram ;;
             12) comprobar_envio_telegram ;;
