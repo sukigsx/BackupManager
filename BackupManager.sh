@@ -335,7 +335,7 @@ agregar_tarea() {
     echo ""
     echo -e " ${azul}Añadir nueva tarea de copia de seguridad${borra_colores}"
     echo ""
-    read -p " Nombre de la tarea: (99 = Atras)" nombre
+    read -p " Nombre de la tarea: (99 = Atras) " nombre
         if [ $nombre = "99" ]; then
             return
         fi
@@ -403,8 +403,10 @@ borrar_tarea() {
     fi
 
     echo ""
-    read -p " Ingrese el nombre de la tarea a borrar: " tarea
-
+    read -p " Ingrese el nombre de la tarea a borrar (99 = Atras): " tarea
+    if [ $tarea = "99" ]; then
+        return
+    fi
     # Verificamos si la tarea existe
     if ! grep -q "^$tarea|" "$CONFIG_FILE"; then
         echo ""
@@ -436,7 +438,10 @@ ejecutar_tarea() {
 
     if [[ -z "$tarea" ]]; then
         echo ""
-        read -p "$(echo -e "${azul} Ingrese el nombre de la tarea a ejecutar: ${borra_colores}")" tarea
+        read -p "$(echo -e "${azul} Ingrese el nombre de la tarea a ejecutar (99 = Atras): ${borra_colores}")" tarea
+        if [ $tarea = "99" ]; then
+            return
+        fi
     fi
 
     linea=$(grep "^$tarea|" "$CONFIG_FILE" 2>/dev/null)
@@ -570,7 +575,10 @@ clear
     if [ -f $config_telegram ]; then
         rm $config_telegram
     fi
-    read -p " Introduce el Bot_Token: " BOT_TOKEN
+    read -p " Introduce el Bot_Token (99 = Atras): " BOT_TOKEN
+    if [ $BOT_TOKEN = "99" ]; then
+            return
+        fi
     read -p " Introduce el Chat_Id: " CHAT_ID
     echo ""
     echo "BOT_TOKEN=$BOT_TOKEN" >> $config_telegram
