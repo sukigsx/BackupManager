@@ -338,7 +338,7 @@ agregar_tarea() {
     read -p " Nombre de la tarea: (99 = Atras)" nombre
         if [ $nombre = "99" ]; then
             return
-        if
+        fi
         #comprueba si existe el nombre de la tarea
         if grep -q "^$nombre|" "$CONFIG_FILE"; then
             echo ""
