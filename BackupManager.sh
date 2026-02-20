@@ -353,9 +353,9 @@ agregar_tarea() {
         #comprobamos si existe la ruta destino y si no existe le preguntamos si la creamos
         if [ ! -e "$destino" ]; then
             echo ""
-            echo -e "${amarillo} La ruta ${borra_colores} $origen ${rojo}NO ${amarillo}existe ${borra_colores}"
+            echo -e "${amarillo} La ruta ${borra_colores} $destino ${rojo}NO ${amarillo}existe ${borra_colores}"
             read -p " Quieres crear la ruta $destino (s/n): " sino
-            if [[ "$respuesta" == "s" || "$respuesta" == "si" ]]; then
+            if [[ "$sino" == "s" || "$sino" == "S" ]]; then
                 sudo mkdir $destino
             else
                 return
