@@ -82,8 +82,6 @@ echo -e "${rosa}                                    ${azul}   Sistema paqueteria
 echo -e ""
 echo -e "${azul} Contacto:${borra_colores} ( Correo${rosa} $Correo${borra_colores} ) ( Web${rosa} $Web${borra_colores} )${borra_colores}"
 echo ""
-echo -e "${azul} Ip de la red:${borra_colores} $(ip route get 8.8.8.8 | awk '{print $7; exit}') ${azul} Ip de internet:${borra_colores} $(curl -s https://icanhazip.com)"
-echo ""
 }
 
 
