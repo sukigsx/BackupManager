@@ -42,7 +42,7 @@ nombre_carpeta_repositorio="BackupManager" #poner el nombre de la carpeta cuando
         [ssh]="ssh"
         [wget]="wget"
 
-              [git]="git"
+        [git]="git"
         [nano]="nano"
         [diff]="diff"
         [sudo]="sudo"
@@ -56,7 +56,10 @@ nombre_carpeta_repositorio="BackupManager" #poner el nombre de la carpeta cuando
         [rsync]="rsync"
         [ssh]="ssh"
         [xdg-user-dir]="xdg-user-dirs"
-        [wget]="wget
+        [wget]="wget"
+
+
+
     )
 ###########################
 ## FUNCIONES PRINCIPALES ##
