@@ -657,12 +657,10 @@ exportar_fichero_configuracion_telegram(){
 menu() {
     while true; do
         if [ -f $config_telegram ]; then
-            #source $config_telegram
-            echo "estoy aqui"; read p
+            source $config_telegram
         else
             configurado_telegram="no"
             envio_telegram="no"
-            echo "popo"; read p
         fi
         clear
         menu_info
