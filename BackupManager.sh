@@ -17,7 +17,6 @@ paqueteria="No detectada"
 # VARIABLE QUE RECOJEN LAS RUTAS
 ruta_ejecucion=$(dirname "$(readlink -f "$0")") #es la ruta de ejecucion del script sin la / al final
 ruta_escritorio=$(xdg-user-dir DESKTOP) #es la ruta de tu escritorio sin la / al final
-CONFIG_FILE=$ruta_ejecucion/backups.conf
 
 # VARIABLES PARA LA ACTUALIZAION CON GITHUB
 NombreScriptActualizar="BackupManager.sh" #contiene el nombre del script para poder actualizar desde github
@@ -301,6 +300,12 @@ fi
 }
 
 #FUNCIONES DEL PROPIO SCRIPT
+
+
+CONFIG_FILE="$ruta_ejecucion/backups.conf"
+config_telegram="$ruta_ejecucion/telegram.conf"
+
+
 listar_tareas() {
     # comprobamos que el fichero de configuracion esta, sino se crea
     if [ -f "$CONFIG_FILE" ]; then
