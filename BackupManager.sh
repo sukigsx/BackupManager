@@ -43,25 +43,8 @@ nombre_carpeta_repositorio="BackupManager" #poner el nombre de la carpeta cuando
         [ssh]="ssh"
         [wget]="wget"
 
-        [git]="git"
-        [nano]="nano"
-        [diff]="diff"
-        [sudo]="sudo"
-        [ping]="ping"
-        [fzf]="fzf"
-        [curl]="curl"
-        [grep]="grep"
-        [jq]="jq"
-        [sed]="sed"
-        [find]="find"
-        [rsync]="rsync"
-        [ssh]="ssh"
-        [xdg-user-dir]="xdg-user-dirs"
-        [wget]="wget"
-
-
-
     )
+
 ###########################
 ## FUNCIONES PRINCIPALES ##
 ###########################
@@ -670,9 +653,11 @@ menu() {
     while true; do
         if [ -f $config_telegram ]; then
             source $config_telegram
+            echo "estoy aqui"; read p
         else
             configurado_telegram="no"
             envio_telegram="no"
+            echo "popo"; read p
         fi
         clear
         menu_info
