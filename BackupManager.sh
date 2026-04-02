@@ -690,7 +690,7 @@ menu() {
         echo ""
         echo -e "${azul} 99)${borra_colores} Salir"
         echo ""; echo -e "${azul} (Telegram configurado =${borra_colores} $configurado_telegram${azul}) (Envio notificaciones =${borra_colores} $envio_telegram${azul})${borra_colores}"
-        #listar_tareas
+        listar_tareas
         echo ""
         #read -p " Seleccione una opción: " opcion
         read -p "$(echo -e "${azul} Seleccione una opción: ${borra_colores}")" opcion
@@ -756,5 +756,5 @@ fi
 
 sleep 2
 clear
-menu_info
+#menu_info
 menu
