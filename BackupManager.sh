@@ -162,6 +162,7 @@ for comando in "${!requeridos[@]}"; do
                 echo ""
                 echo -e " ${rojo}No se puede ejecutar el script sin todo el software necesario.${borra_colores}"
                 echo ""
+                read -p " Pulsa una tecla para continuar" pulsa
                 exit 1
             else
                 echo -e "${amarillo} Se necesita instalar ${borra_colores}$comando${amarillo} para la ejecucion del script${borra_colores}"
