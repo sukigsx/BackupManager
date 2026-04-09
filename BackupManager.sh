@@ -185,13 +185,13 @@ for comando in "${!requeridos[@]}"; do
 # Función que comprueba si se ejecuta como root
 check_root() {
     #clear
-    #menu_info
+    menu_info
   if [ "$EUID" -ne 0 ]; then
-    #echo ""
-    #echo -e "${amarillo} Se necesita privilegios de root ingresa la contraseña.${borra_colores}"
+    echo ""
+    echo -e "${amarillo} Se necesita privilegios de root ingresa la contraseña.${borra_colores}"
 
     # Pedir contraseña para sudo
-    #echo -e ""
+    echo -e ""
 
     # Validar contraseña mediante sudo -v (verifica sin ejecutar comando)
     if sudo -v; then
