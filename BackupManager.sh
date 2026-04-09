@@ -526,7 +526,7 @@ ejecutar_tarea() {
 
     # --- CASO: local -> local ---
     if [[ "$remoto_origen" = "no" && "$remoto_destino" = "no" ]]; then
-        rsync -avzh --delete "$origen" "$destino"
+        sudo rsync -avzh --delete "$origen" "$destino"
         resultado=$?
     fi
 
