@@ -747,4 +747,5 @@ fi
 sleep 2
 clear
 #menu_info
+check_root
 menu
