@@ -485,9 +485,9 @@ ejecutar_tarea() {
 
         # Paso 1: origen remoto -> tmp local
         if [[ -n "$clave_origen" ]]; then
-            rsync -avzh --delete -e "ssh -i $clave_origen" --rsync-path="sudo rsync" "$origen" "$tmp"
+            sudo rsync -avzh --delete -e "ssh -i $clave_origen" --rsync-path="sudo rsync" "$origen" "$tmp"
         else
-            rsync -avzh --delete -e "ssh" --rsync-path="sudo rsync" "$origen" "$tmp"
+            sudo rsync -avzh --delete -e "ssh" --rsync-path="sudo rsync" "$origen" "$tmp"
         fi
         if [[ $? -ne 0 ]]; then
             echo -e "${rojo} Error copiando desde el origen remoto.${borra_colores}"
@@ -496,9 +496,9 @@ ejecutar_tarea() {
 
         # Paso 2: tmp local -> destino remoto
         if [[ -n "$clave_destino" ]]; then
-            rsync -avzh --delete -e "ssh -i $clave_destino" "$tmp/" "$destino"
+            sudo rsync -avzh --delete -e "ssh -i $clave_destino" "$tmp/" "$destino"
         else
-            rsync -avzh --delete -e "ssh" "$tmp/" "$destino"
+            sudo rsync -avzh --delete -e "ssh" "$tmp/" "$destino"
         fi
         resultado=$?
         rm -rf "$tmp"
@@ -507,9 +507,9 @@ ejecutar_tarea() {
     # --- CASO: remoto -> local ---
     if [[ "$remoto_origen" = "si" && "$remoto_destino" = "no" ]]; then
         if [[ -n "$clave_origen" ]]; then
-            rsync -avzh --delete -e "ssh -i $clave_origen" --rsync-path="sudo rsync" "$origen" "$destino"
+            sudo rsync -avzh --delete -e "ssh -i $clave_origen" --rsync-path="sudo rsync" "$origen" "$destino"
         else
-            rsync -avzh --delete -e "ssh" --rsync-path="sudo rsync" "$origen" "$destino"
+            sudo rsync -avzh --delete -e "ssh" --rsync-path="sudo rsync" "$origen" "$destino"
         fi
         resultado=$?
     fi
@@ -517,9 +517,9 @@ ejecutar_tarea() {
     # --- CASO: local -> remoto ---
     if [[ "$remoto_origen" = "no" && "$remoto_destino" = "si" ]]; then
         if [[ -n "$clave_destino" ]]; then
-            rsync -avzh --delete -e "ssh -i $clave_destino" "$origen" "$destino"
+            sudo rsync -avzh --delete -e "ssh -i $clave_destino" "$origen" "$destino"
         else
-            rsync -avzh --delete -e "ssh" "$origen" "$destino"
+            sudo rsync -avzh --delete -e "ssh" "$origen" "$destino"
         fi
         resultado=$?
     fi
