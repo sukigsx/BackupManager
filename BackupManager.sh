@@ -539,7 +539,7 @@ ejecutar_tarea() {
         if [ "$envio_telegram" = "si" ]; then
             wget -O - "https://api.telegram.org/bot$BOT_TOKEN/sendMessage?chat_id=$CHAT_ID&text=Backup de $tarea ( FALLO )" > /dev/null 2>&1
         fi
-        sleep 5
+        sleep 5; echo ""; read -p " Pulsa una tecla para continuar" pause
     fi
 }
 
