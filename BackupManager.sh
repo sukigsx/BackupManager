@@ -752,10 +752,10 @@ fi
 if [[ $# -gt 0 ]]; then
     case "$1" in
         listar)
-            listar_tareas
+            listar_tareas "$2"
             ;;
         agregar)
-            agregar_tarea
+            agregar_tarea "$2"
             ;;
         borrar)
             borrar_tarea "$2"
