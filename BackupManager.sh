@@ -744,8 +744,40 @@ else
     fi
 fi
 
-sleep 2
-clear
-#menu_info
-check_root
-menu
+##sleep 2
+##clear
+##check_root
+##menu
+
+if [[ $# -gt 0 ]]; then
+    case "$1" in
+        listar)
+            listar_tareas
+            ;;
+        agregar)
+            agregar_tarea
+            ;;
+        borrar)
+            borrar_tarea "$2"
+            ;;
+        ejecutar)
+            ejecutar_tarea "$2"
+            ;;
+        menu)
+            menu
+            ;;
+        *)
+            echo "Uso:"
+            echo "  $0 listar"
+            echo "  $0 agregar"
+            echo "  $0 borrar <nombre>"
+            echo "  $0 ejecutar <nombre>"
+            echo "  $0 menu"
+            ;;
+    esac
+else
+    menu
+fi
+
+
+
