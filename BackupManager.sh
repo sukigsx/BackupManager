@@ -767,12 +767,13 @@ if [[ $# -gt 0 ]]; then
             menu
             ;;
         *)
-            echo "Uso:"
+            menu
+            echo " Uso de ejecucion"
+            echo " Para su uso normal y ver todas sus opciones: ejecutar $?"
             echo "  $0 listar_tareas"
             echo "  $0 agregar_tarea"
-            echo "  $0 borrar_tarea <nombre>"
+            echo "  $0 borrar_tarea"
             echo "  $0 ejecutar_tarea <nombre_de_la_tarea>"
-            echo "  $0 menu"
             ;;
     esac
 else
