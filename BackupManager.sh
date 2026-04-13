@@ -751,16 +751,16 @@ fi
 
 if [[ $# -gt 0 ]]; then
     case "$1" in
-        listar)
-            listar_tareas "$2"
+        listar_tareas)
+            listar_tareas
             ;;
-        agregar)
-            agregar_tarea "$2"
+        agregar_tarea)
+            agregar_tarea
             ;;
-        borrar)
+        borrar_tarea)
             borrar_tarea "$2"
             ;;
-        ejecutar)
+        ejecutar_tarea)
             ejecutar_tarea "$2"
             ;;
         menu)
@@ -768,10 +768,10 @@ if [[ $# -gt 0 ]]; then
             ;;
         *)
             echo "Uso:"
-            echo "  $0 listar"
-            echo "  $0 agregar"
-            echo "  $0 borrar <nombre>"
-            echo "  $0 ejecutar <nombre>"
+            echo "  $0 listar_tareas"
+            echo "  $0 agregar_tarea"
+            echo "  $0 borrar_tarea <nombre>"
+            echo "  $0 ejecutar_tarea <nombre_de_la_tarea>"
             echo "  $0 menu"
             ;;
     esac
