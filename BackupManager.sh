@@ -768,9 +768,10 @@ if [[ $# -gt 0 ]]; then
             ;;
         *)
             menu_info
-            echo -e "${azul} -- ${borra_colores}Uso de ejecucion ${azul}--${borra_colores}"
+            echo -e "${azul} -- ${amarillo}Uso de ejecucion ${azul}--${borra_colores}"
             echo ""
-            echo " Para su uso normal y ver todas sus opciones: ejecutar $0"
+            echo -e "${azul} Para su uso normal y ver todas sus opciones: ejecutar${borra_colores} $0"
+            echo -e "${azul} Para su ejecucion directa de funciones:${borra_colores}"
             echo "    $0 listar_tareas"
             echo "    $0 agregar_tarea"
             echo "    $0 borrar_tarea"
