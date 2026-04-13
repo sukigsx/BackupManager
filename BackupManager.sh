@@ -768,12 +768,13 @@ if [[ $# -gt 0 ]]; then
             ;;
         *)
             menu_info
-            echo " Uso de ejecucion"
-            echo " Para su uso normal y ver todas sus opciones: ejecutar $?"
-            echo "  $0 listar_tareas"
-            echo "  $0 agregar_tarea"
-            echo "  $0 borrar_tarea"
-            echo "  $0 ejecutar_tarea <nombre_de_la_tarea>"
+            echo -e "${azul} -- ${borra_colores}Uso de ejecucion ${azul}--${borra_colores}"
+            echo ""
+            echo " Para su uso normal y ver todas sus opciones: ejecutar $0"
+            echo "    $0 listar_tareas"
+            echo "    $0 agregar_tarea"
+            echo "    $0 borrar_tarea"
+            echo "    $0 ejecutar_tarea <nombre_de_la_tarea>"
             ;;
     esac
 else
