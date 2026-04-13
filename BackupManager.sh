@@ -767,7 +767,7 @@ if [[ $# -gt 0 ]]; then
             menu
             ;;
         *)
-            menu
+            menu_info
             echo " Uso de ejecucion"
             echo " Para su uso normal y ver todas sus opciones: ejecutar $?"
             echo "  $0 listar_tareas"
