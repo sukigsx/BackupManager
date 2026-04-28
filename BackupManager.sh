@@ -99,16 +99,21 @@ comprobar_actualizaciones(){
         #hay que actualizar, comprueba y actualiza
         echo ""
         echo -e "${amarillo} Existe una actualizacion del script${borra_colores}"
-        read -t 5 -n 1 -p " Quieres actualizar ? (S/n): " sino
 
-        # Si no responde en 5s, se asigna "n"
-        sino=${sino:-n}
-        echo -e "${amarillo}Tiempo superado${verde} Se selecciona${borra_colores} NO ${verde}automatico${borra_colores}"; sleep 2
-        if [[ $sino == [sS] ]]; then
-            actualizar_script
-        else
-            actualizado="NO"
-        fi
+    if ! read -t 5 -n 1 -p " ¿Quieres actualizar? (S/n): " sino; then
+        sino="n"
+        echo
+        echo -e "${amarillo}Tiempo superado${verde} Se selecciona${borra_colores} NO ${verde} automático${borra_colores}"
+        sleep 2
+    else
+        echo
+    fi
+
+    if [[ "$sino" =~ [sS] ]]; then
+        actualizar_script
+    else
+        actualizado="NO"
+    fi
         chmod -R +w /tmp/comprobar
         rm -R /tmp/comprobar
     fi
