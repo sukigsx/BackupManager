@@ -103,7 +103,7 @@ comprobar_actualizaciones(){
 
         # Si no responde en 5s, se asigna "n"
         sino=${sino:-n}
-
+        echo -e "${amarillo}Tiempo superado${verde} Se selecciona${borra_colores} NO ${verde}automatico${borra_colores}"; sleep 2
         if [[ $sino == [sS] ]]; then
             actualizar_script
         else
