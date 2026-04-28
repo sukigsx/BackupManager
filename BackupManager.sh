@@ -8,7 +8,7 @@ export NombreScript="BackupManager.sh"
 export DescripcionDelScript="Herramienta de copia de seguridad"
 export Correo="scripts@mbbsistemas.es"
 export Web="https://repositorio.mbbsistemas.es"
-export version="1.3"
+export version="1.5"
 conexion="Sin comprobar"
 software="Sin comprobar"
 actualizado="Sin comprobar"
@@ -103,8 +103,8 @@ comprobar_actualizaciones(){
     if ! read -t 5 -n 1 -p " ¿Quieres actualizar? (S/n): " sino; then
         sino="n"
         echo
-        echo -e "${amarillo}Tiempo superado${verde} Se selecciona${borra_colores} NO ${verde} automático${borra_colores}"
-        sleep 2
+        echo -e "${amarillo} Tiempo superado${verde} Se selecciona${borra_colores} NO ${verde} automático${borra_colores}"
+        sleep 3
     else
         echo
     fi
