@@ -99,7 +99,11 @@ comprobar_actualizaciones(){
         #hay que actualizar, comprueba y actualiza
         echo ""
         echo -e "${amarillo} Existe una actualizacion del script${borra_colores}"
-        read -p " Quieres actualizar ? (S/n): " sino
+        read -t 5 -n 1 -p " Quieres actualizar ? (S/n): " sino
+
+        # Si no responde en 5s, se asigna "n"
+        sino=${sino:-n}
+
         if [[ $sino == [sS] ]]; then
             actualizar_script
         else
