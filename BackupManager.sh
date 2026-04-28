@@ -102,8 +102,8 @@ comprobar_actualizaciones(){
 
     if ! read -t 5 -n 1 -p " ¿Quieres actualizar? (S/n): " sino; then
         sino="n"
-        echo
-        echo -e "${amarillo} Tiempo superado${verde} Se selecciona${borra_colores} NO ${verde} automático${borra_colores}"
+        echo ""
+        echo -e "${amarillo} Tiempo superado${verde} Se selecciona${borra_colores} NO ${verde}automaticamente.${borra_colores}"
         sleep 3
     else
         echo
