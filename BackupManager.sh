@@ -358,7 +358,7 @@ agregar_tarea() {
             echo -e "${amarillo} El nombre de tarea${borra_colores} $nombre ${amarillo}ya existe ${borra_colores}"
             sleep 4; return
         fi
-    read -p " Ruta de origen (local o user@host:/ruta): " origen
+    read -p " Ruta de origen (/ruta/absoluta/origen o user@host:/ruta/absoluta/origen): " origen
         #comprobar si existe la ruta
         if [ ! -e "$origen" ]; then
             echo ""
@@ -366,13 +366,8 @@ agregar_tarea() {
             sleep 4; return
         fi
     echo ""
-    echo -e "${amarillo} La ruta de destino tiene que estar dentro de tu${borra_colores} $HOME"
-    echo -e "${azul} ejemplos para la ruta destino (${borra_colores}destino_de_backup${azul})${borra_colores}"
-    echo -e "${azul}                               (${borra_colores}copias/destino_de_backup${azul})${borra_colores}"
-    echo ""
-    read -p " Ruta de destino, (local o user@host:/ruta): " destino
+    read -p " Ruta de destino, (/ruta/absoluta/destino o user@host:/ruta/absoluta/destino): " destino
         #comprobamos si existe la ruta destino dentro de su homey si no existe le preguntamos si la creamos
-        #if [ ! -e "/home/$(whoami)/$destino" ]; then
         if [ ! -e "$destino" ]; then
             echo ""
             echo -e "${amarillo} La ruta ${borra_colores} $destino ${rojo}NO ${amarillo}existe ${borra_colores}"
@@ -380,7 +375,6 @@ agregar_tarea() {
             if [[ "$sino" == "s" || "$sino" == "S" ]]; then
                 mkdir -p /home/$(whoami)/$destino
                 if [ $? = 0 ]; then
-                    #destino="/home/$(whoami)/$destino"
                     destino="$destino"
                 else
                     echo ""
