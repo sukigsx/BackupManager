@@ -372,14 +372,16 @@ agregar_tarea() {
     echo ""
     read -p " Ruta de destino, (local o user@host:/ruta): " destino
         #comprobamos si existe la ruta destino dentro de su homey si no existe le preguntamos si la creamos
-        if [ ! -e "/home/$(whoami)/$destino" ]; then
+        #if [ ! -e "/home/$(whoami)/$destino" ]; then
+        if [ ! -e "$destino" ]; then
             echo ""
             echo -e "${amarillo} La ruta ${borra_colores} $destino ${rojo}NO ${amarillo}existe ${borra_colores}"
             read -p " Quieres crear la ruta $destino (s/n): " sino
             if [[ "$sino" == "s" || "$sino" == "S" ]]; then
                 mkdir -p /home/$(whoami)/$destino
                 if [ $? = 0 ]; then
-                    destino="/home/$(whoami)/$destino"
+                    #destino="/home/$(whoami)/$destino"
+                    destino="$destino"
                 else
                     echo ""
                     echo -e "${rojo} Fallo al crear la o las carpetas destino${borra_colores} $destino"
