@@ -124,3 +124,11 @@ Puedes ejecutarlo así:
 ./BackupManager.sh ejecutar_tarea nombre
 
 Sin entrar al menú.
+
+## Instalacion
+Clonar el repositorio
+
+Descargar script con WGET
+```
+wget -O BackupManager.sh https://raw.githubusercontent.com/sukigsx/DescargarYT/refs/heads/main/DescargarYT.sh && chmod +x DescargarYT.sh
+```
