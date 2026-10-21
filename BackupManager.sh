@@ -5,7 +5,7 @@
 #variables para el menu_info
 
 export NombreScript="BackupManager.sh"
-export DescripcionDelScript="PRUEBA DE MEJORA"
+export DescripcionDelScript="Es un gestor de copias de seguridad (backups) hecho en Bash."
 export Correo="scripts@mbbsistemas.es"
 export Web="https://repositorio.mbbsistemas.es"
 export version="1.0"
