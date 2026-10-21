@@ -127,8 +127,24 @@ Sin entrar al menú.
 
 ## Instalacion
 Clonar el repositorio
+```
+git clone https://github.com/sukigsx/BackupManager.git
+```
 
 Descargar script con WGET
 ```
-wget -O BackupManager.sh https://raw.githubusercontent.com/sukigsx/DescargarYT/refs/heads/main/DescargarYT.sh && chmod +x DescargarYT.sh
+wget -O BackupManager.sh https://raw.githubusercontent.com/sukigsx/BackupManager/refs/heads/main/BackupManager.sh && chmod +x BackupManager.sh
+```
+
+Tambien puedes ejecutar mi script de instalaciones
+```
+git clone https://github.com/sukigsx/ejecutar_scripts.git
+```
+
+```
+cd Ejecutar_scripts.sh
+```
+
+```
+bash Ejecutar_scripts.sh
 ```
